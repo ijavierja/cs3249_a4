@@ -1,0 +1,19 @@
+.header {
+  background-color: #f1f1f1;
+  padding-top: 50px;
+  padding-bottom: 20px;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.main-content {
+  background-color: lightcyan;
+  padding: 20px;
+  height: 300px;
+}
+
+.footer {
+  background-color: lightblue;
+  padding: 20px;
+  height: 300px;
+}

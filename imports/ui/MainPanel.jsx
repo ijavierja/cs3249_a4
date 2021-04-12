@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Controller from "./components/Controller.jsx";
 import TimeSeriesGraphView from "./components/TimeSeriesGraphView.jsx"
 import './MainPanel.css';
+import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
 import moment from "moment";
 
@@ -15,6 +16,22 @@ class MainPanel extends Component {
       startDate: start,
       endDate: end,
       size: 7,
+      temp0: 20,
+      temp1: 20,
+      temp2: 20,
+      temp3: 20,
+      temp4: 20,
+      temp5: 20,
+      temp6:20,
+      tempMax: 28.06,
+      tempMin: 7.983,
+      color0: 'rgba(88,117,153,1)',
+      color1: 'rgba(88,117,153,0.9)',
+      color2: 'rgba(88,117,153,0.8)',
+      color3: 'rgba(88,117,153,0.7)',
+      color4: 'rgba(88,117,153,0.6)',
+      color5: 'rgba(88,117,153,0.5)',
+      color6: 'rgba(88,117,153,0.4)',
     };
   }
 
@@ -45,7 +62,15 @@ class MainPanel extends Component {
           Main content
           <TimeSeriesGraphView />
         </div>
-        <div class="footer">Image</div>
+        <div class="footer">
+          <Button style={{backgroundColor: this.state.color0}}>Room 0</Button>
+          <Button style={{backgroundColor: this.state.color1}}>R1</Button>
+          <Button style={{backgroundColor: this.state.color2}}>R2</Button>
+          <Button style={{backgroundColor: this.state.color3}}>R3</Button>
+          <Button style={{backgroundColor: this.state.color4}}>R4</Button>
+          <Button style={{backgroundColor: this.state.color5}}>R5</Button>
+          <Button style={{backgroundColor: this.state.color6}}>R6</Button>
+        </div>
       </div>
     );
   }

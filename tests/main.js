@@ -1,9 +1,9 @@
 import assert from "assert";
 
-describe("simple", function () {
+describe("Room Temperature Monitoring Dashboard", function () {
   it("package.json has correct name", async function () {
     const { name } = await import("../package.json");
-    assert.strictEqual(name, "simple");
+    assert.strictEqual(name, "Room Temperature Monitoring Dashboard");
   });
 
   if (Meteor.isClient) {

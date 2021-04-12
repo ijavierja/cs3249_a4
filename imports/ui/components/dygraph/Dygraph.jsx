@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Dygraph from "dygraphs";
-import "dygraphs/dist/dygraph.min.css";
 
 class DyGraph extends Component {
   componentDidMount() {
@@ -9,12 +8,27 @@ class DyGraph extends Component {
       "2008-05-07,75\n" +
       "2008-05-08,70\n" +
       "2008-05-09,80\n";
-      
-    new DygraphBase(this.refs.chart, data, {});
+    
+      const interactionModel = Object.assign(
+      {},
+      Dygraph.defaultInteractionModel,
+      {
+        mouseup: (event, g, context) => {
+          if (context.isPanning == true) {
+            onPanZoom(g.dateWindow_[0], g.dateWindow_[1]);
+          }
+          Dygraph.endPan(event, g, context);
+          context.isPanning = false;
+        },
+      }
+    );
+
+    new Dygraph(this.refs.graph, data, {
+    });
   }
 
   render() {
-    return <div ref="chart"></div>;
+    return <div ref="graph"></div>;
   }
 }
 

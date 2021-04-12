@@ -3,38 +3,29 @@ import Controller from "./components/Controller.jsx";
 import TimeSeriesGraphView from "./components/TimeSeriesGraphView.jsx"
 import './MainPanel.css';
 import "bootstrap/dist/css/bootstrap.min.css";
+import moment from "moment";
 
 class MainPanel extends Component {
   constructor(props) {
     super(props);
+    let now = new Date();
+    let start = moment(new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0,0,0,0));
+    let end = moment(start).add(1, "days").subtract(1, "seconds");
     this.state = {
-      startDate: new Date(),
-      startTime: "10:00",
-      endDate: new Date(),
-      endTime: "10:00",
+      startDate: start,
+      endDate: end,
       size: 7,
     };
   }
 
-  onStartDateChange = (newValue) => {
-    console.log("CHANGE");
-    this.setState({ startDate: newValue });
-  };
+  onDateChange = (newStartDate, newEndDate) => {
+    this.setState({
+      startDate: newStartDate,
+      endDate: newEndDate
+    })
+  }
 
-  onStartTimeChange = (newValue) => {
-    this.setState({ startTime: newValue });
-  };
-
-  onEndDateChange = (newValue) => {
-    console.log(newValue);
-    this.setState({ endDate: newValue });
-  };
-
-  onEndTimeChange = (newValue) => {
-    this.setState({ endTime: newValue });
-  };
-
-  onSizeChange = (newValue) => {
+  onSizeChange = (event, newValue) => {
     this.setState({ size: newValue });
   };
 
@@ -44,15 +35,10 @@ class MainPanel extends Component {
         <div class="header">
           <Controller
             startDate={this.state.startDate}
-            startTime={this.state.startTime}
             endDate={this.state.endDate}
-            endTime={this.state.endTime}
             size={this.state.size}
-            onStartDateChange={this.state.onStartDateChange}
-            onStartTimeChange={this.state.onStartTimeChange}
-            onEndDateChange={this.state.onEndDateChange}
-            onEndTimeChange={this.state.onEndTimeChange}
-            onSizeChange={this.state.onSizeChange}
+            onDateChange={this.onDateChange}
+            onSizeChange={this.onSizeChange}
           />
         </div>
         <div class="main-content">

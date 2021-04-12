@@ -26,6 +26,7 @@ class MainPanel extends Component {
   };
 
   onEndDateChange = (newValue) => {
+    console.log(newValue);
     this.setState({ endDate: newValue });
   };
 

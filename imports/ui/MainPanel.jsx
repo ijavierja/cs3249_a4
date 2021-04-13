@@ -91,7 +91,7 @@ class MainPanel extends Component {
         $in: this.chooseTime(
           moment("2013-10-02T05:00:00"),
           moment("2013-10-10T05:00:00"),
-          10
+          100 //size
         ),
       },
     }).fetch();
@@ -208,12 +208,11 @@ class MainPanel extends Component {
         </div>
         <div class="main-content">
           Main content
-          {this.state.data.length}
+          <h3>No. of data: {this.state.data.length}</h3>
           <TimeSeriesGraphWrapper />
         </div>
         <div class="footer">Image</div>
-        <button onClick={this.handleClick}>Try!</button>
-        <button onClick={this.fetchData}>+++</button>
+        <button onClick={this.fetchData}>update data</button>
         <div class="footer">
           <Button style={{backgroundColor: this.state.color0}}>Room 0</Button>
           <Button style={{backgroundColor: this.state.color1}}>R1</Button>

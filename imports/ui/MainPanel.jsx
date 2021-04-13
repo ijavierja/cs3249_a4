@@ -4,22 +4,27 @@ import TimeSeriesGraphView from "./components/TimeSeriesGraphView.jsx"
 import './MainPanel.css';
 import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
-import moment from "moment";
+import Room from "./components/Room.jsx";
+import * as Constants from "./util/Constants.jsx";
 
 class MainPanel extends Component {
   constructor(props) {
     super(props);
-    let now = new Date();
-    // let start = moment(new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0,0,0,0));
-    // let end = moment(start).add(1, "days").subtract(1, "seconds");
-    let start = moment('2013-10-02 05:00:00');
-    let end = moment('2013-12-03 15:30:00');
+    let start = Constants.minDate;
+    let end = Constants.maxDate;
     this.state = {
-      minDate: start,
-      maxDate: end,
       startDate: start,
       endDate: end,
       size: 7,
+      rooms: {
+        room0: new Room(0),
+        room1: new Room(1),
+        room2: new Room(2),
+        room3: new Room(3),
+        room4: new Room(4),
+        room5: new Room(5),
+        room6: new Room(6),
+      },
       temp0: 20,
       temp1: 20,
       temp2: 20,
@@ -41,14 +46,14 @@ class MainPanel extends Component {
 
   onDateChange = (newStartDate, newEndDate) => {
     // start date
-    if (newStartDate < this.state.minDate) {
-      this.setState({startDate: this.state.minDate})
+    if (newStartDate < Constants.minDate) {
+      this.setState({startDate: Constants.minDate})
     } else {
       this.setState({startDate: newStartDate.set('minute', Math.floor(newStartDate.minute()/15)*15)})
     }
     // end date
-    if (newEndDate > this.state.maxDate) {
-      this.setState({endDate: this.state.maxDate})
+    if (newEndDate > Constants.maxDate) {
+      this.setState({endDate: Constants.maxDate})
     } else {
       this.setState({endDate: newEndDate.set('minute', Math.floor(newEndDate.minute()/15)*15)})
     }
@@ -63,8 +68,6 @@ class MainPanel extends Component {
       <div class="body">
         <div class="header">
           <Controller
-            minDate={this.state.minDate}
-            maxDate={this.state.maxDate}
             startDate={this.state.startDate}
             endDate={this.state.endDate}
             size={this.state.size}

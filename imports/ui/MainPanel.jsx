@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Controller from "./components/Controller.jsx";
-import TimeSeriesGraphView from "./components/TimeSeriesGraphView.jsx"
+import TimeSeriesGraphWrapper from "./components/TimeSeriesGraphWrapper.jsx";
 import './MainPanel.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import moment from "moment";
@@ -43,7 +43,7 @@ class MainPanel extends Component {
         </div>
         <div class="main-content">
           Main content
-          <TimeSeriesGraphView />
+          <TimeSeriesGraphWrapper start={0} end={7} />
         </div>
         <div class="footer">Image</div>
       </div>

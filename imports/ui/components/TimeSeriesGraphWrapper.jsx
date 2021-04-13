@@ -6,7 +6,7 @@ import TimeSeriesGraphView from "./TimeSeriesGraphView.jsx";
 const TimeSeriesGraphWrapper = withTracker(({ start, end }) => {
   Meteor.subscribe("timeseries");
   return {
-    tasks: TimeSeriesCollection.find(
+    data: TimeSeriesCollection.find(
       {},
       { skip: start, limit: end - start }
     ).fetch(),

@@ -2,11 +2,11 @@ import React, { Component, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
 import DateTimeRangeContainer from 'react-advanced-datetimerange-picker'
 import {FormControl} from 'react-bootstrap'
 import Slider from "@material-ui/core/Slider";
 import moment from "moment";
+import * as Constants from "../util/Constants.jsx";
 
 const marks = [
   {value: 1, label: '1'},
@@ -32,13 +32,13 @@ class Controller extends React.Component {
     let ranges = {
       "Today Only": [moment(start), moment(end)],
       "Yesterday Only": [moment(start).subtract(1, "days"), moment(end).subtract(1, "days")],
-      "3 Days": [moment(start).subtract(3, "days"), moment(end)]
+      "3 Days": [moment(start).subtract(3, "days"), moment(end)],
+      "Assignment 4": [moment(Constants.minDate), moment(Constants.maxDate)]
     }
     let local = {
       "format":"DD-MM-YYYY HH:mm",
       "sundayFirst" : false
     }
-    let maxDate = moment(start).add(24, "hour")
     return(
       <div>
         <DateTimeRangeContainer 
@@ -46,14 +46,12 @@ class Controller extends React.Component {
           start={this.props.startDate}
           end={this.props.endDate}
           local={local}
-          // maxDate={maxDate}
           applyCallback={this.props.onDateChange}
         >    
         <FormControl
-          id="formControlsTextB"
           type="text"
           label="Text"
-          placeholder="Set datetime"
+          placeholder="Set datetime (note: invalid datetimes will automatically be adjusted into valid datetimes)"
         /> 
         </DateTimeRangeContainer>
         <p>Start: {this.props.startDate.toString()}</p>

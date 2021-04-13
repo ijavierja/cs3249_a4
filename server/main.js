@@ -1,19 +1,16 @@
 import { Meteor } from 'meteor/meteor';
 import { TimeSeriesCollection } from "/imports/api/TimeSeriesCollection";
-
-const insertTask = (taskText) =>
-  TimeSeriesCollection.insert({ text: taskText });
+import Papa from 'papaparse';
 
 Meteor.startup(() => {
   if (TimeSeriesCollection.find().count() === 0) {
-    [
-      "First Task",
-      "Second Task",
-      "Third Task",
-      "Fourth Task",
-      "Fifth Task",
-      "Sixth Task",
-      "Seventh Task",
-    ].forEach(insertTask);
+    console.log("starting");
+    var parsed = Papa.parse(Assets.getText("room-temperatures.csv"), { header: true });
+    for (var i = 0; i < parsed.data.length - 1; i++) {
+      console.log("loading");
+      
+      TimeSeriesCollection.insert(parsed.data[i]);
+      
+    }
   }
 });

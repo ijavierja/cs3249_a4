@@ -27,25 +27,18 @@ class MainPanel extends Component {
       rm0Data: [],
       data: [],
       rm0Temp: 20,
-      rm0Color: 'rgba(88,117,153,1)',
       rm0IsActivated: false,
       rm1Temp: 20,
-      rm1Color: 'rgba(88,117,153,1)',
       rm1IsActivated: false,
       rm2Temp: 20,
-      rm2Color: 'rgba(88,117,153,1)',
       rm2IsActivated: false,
       rm3Temp: 20,
-      rm3Color: 'rgba(88,117,153,1)',
       rm3IsActivated: false,
       rm4Temp: 20,
-      rm4Color: 'rgba(88,117,153,1)',
       rm4IsActivated: false,
       rm5Temp: 20,
-      rm5Color: 'rgba(88,117,153,1)',
       rm5IsActivated: false,
       rm6Temp: 20,
-      rm6Color: 'rgba(88,117,153,1)',
       rm6IsActivated: false,
     };
   }
@@ -126,6 +119,11 @@ class MainPanel extends Component {
     console.log("clicked!");
   }
 
+  getNewColor = (newAvgTemp) => {
+    let intensity = (newAvgTemp - Constants.minTemp) / (Constants.maxTemp - Constants.minTemp);
+    return `rgba(0,66,129,${0.5+intensity/2})`;
+  }
+
   render() {
     return (
       <div class="body">
@@ -142,20 +140,16 @@ class MainPanel extends Component {
           Main content
           <h3>No. of data: {this.state.data.length}</h3>
           <TimeSeriesGraphWrapper />
-          {this.state.data.map(timeseries =>
-            <p>Time: {timeseries.timestamp}, roomid: {timeseries.RoomId}</p>
-          )}
         </div>
-        <div class="footer">Image</div>
         <button onClick={this.fetchData}>update data</button>
         <div class="footer">
-          <Button style={{backgroundColor: this.state.room0Color}} onClick={() => this.setState({rm0IsActivated: !this.state.rm0IsActivated})}>Room 0</Button>
-          <Button style={{backgroundColor: this.state.room1Color}} onClick={() => this.setState({rm1IsActivated: !this.state.rm1IsActivated})}>Room 1</Button>
-          <Button style={{backgroundColor: this.state.room2Color}} onClick={() => this.setState({rm2IsActivated: !this.state.rm2IsActivated})}>Room 2</Button>
-          <Button style={{backgroundColor: this.state.room3Color}} onClick={() => this.setState({rm3IsActivated: !this.state.rm3IsActivated})}>Room 3</Button>
-          <Button style={{backgroundColor: this.state.room4Color}} onClick={() => this.setState({rm4IsActivated: !this.state.rm4IsActivated})}>Room 4</Button>
-          <Button style={{backgroundColor: this.state.room5Color}} onClick={() => this.setState({rm5IsActivated: !this.state.rm5IsActivated})}>Room 5</Button>
-          <Button style={{backgroundColor: this.state.room6Color}} onClick={() => this.setState({rm6IsActivated: !this.state.rm6IsActivated})}>Room 6</Button>
+          <Button style={{backgroundColor: this.getNewColor(28)}} onClick={() => this.setState({rm0IsActivated: !this.state.rm0IsActivated})}>Room 0</Button>
+          <Button style={{backgroundColor: this.getNewColor(22)}} onClick={() => this.setState({rm1IsActivated: !this.state.rm1IsActivated})}>Room 1</Button>
+          <Button style={{backgroundColor: this.getNewColor(20)}} onClick={() => this.setState({rm2IsActivated: !this.state.rm2IsActivated})}>Room 2</Button>
+          <Button style={{backgroundColor: this.getNewColor(17)}} onClick={() => this.setState({rm3IsActivated: !this.state.rm3IsActivated})}>Room 3</Button>
+          <Button style={{backgroundColor: this.getNewColor(15)}} onClick={() => this.setState({rm4IsActivated: !this.state.rm4IsActivated})}>Room 4</Button>
+          <Button style={{backgroundColor: this.getNewColor(12)}} onClick={() => this.setState({rm5IsActivated: !this.state.rm5IsActivated})}>Room 5</Button>
+          <Button style={{backgroundColor: this.getNewColor(7)}} onClick={() => this.setState({rm6IsActivated: !this.state.rm6IsActivated})}>Room 6</Button>
           <p>room0: {this.state.rm0IsActivated.toString()}</p>
         </div>
       </div>

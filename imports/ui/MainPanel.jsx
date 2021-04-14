@@ -210,6 +210,9 @@ class MainPanel extends Component {
           Main content
           <h3>No. of data: {this.state.data.length}</h3>
           <TimeSeriesGraphWrapper />
+          {this.state.data.map(timeseries =>
+            <p>Time: {timeseries.timestamp}, roomid: {timeseries.RoomId}</p>
+          )}
         </div>
         <div class="footer">Image</div>
         <button onClick={this.fetchData}>update data</button>

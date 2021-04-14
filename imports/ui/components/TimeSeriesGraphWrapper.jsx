@@ -4,13 +4,10 @@ import { TimeSeriesCollection } from "/imports/api/TimeSeriesCollection";
 import TimeSeriesGraphView from "./TimeSeriesGraphView.jsx";
 import React, { Component } from "react";
 
-const TimeSeriesGraphWrapper = withTracker((startDate, endDate, size) => {
+const TimeSeriesGraphWrapper = withTracker(() => {
   Meteor.subscribe("timeseries");
   return {
-    data: TimeSeriesCollection.find({}).fetch(),
-    startDate: startDate,
-    endDate: endDate,
-    size: size,
+    data: TimeSeriesCollection.find({},{}).fetch(),
   };
 })(TimeSeriesGraphView);
 

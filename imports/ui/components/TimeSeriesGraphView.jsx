@@ -7,19 +7,8 @@ export default class TimeSeriesGraphView extends Component {
     return (
       <div>
         TimeSeriesGraphView
+        <h3>{this.props.data.length}</h3>
       </div>
     );
   }
 }
-/*
-const Graph = ({ datapoint }) => {
-  return (
-    <li>
-      {datapoint.RoomId} {datapoint.timestamp} {datapoint.temperature}
-    </li>
-  );
-};
-{
-  this.props.data.map((datapoint) => <Graph datapoint={datapoint} />);
-}
-*/

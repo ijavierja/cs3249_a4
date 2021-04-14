@@ -7,7 +7,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import moment from "moment";
 import { TimeSeriesCollection } from "/imports/api/TimeSeriesCollection";
 import { withTracker } from "meteor/react-meteor-data";
-import Room from "./components/Room.jsx";
 import * as Constants from "./util/Constants.jsx";
 
 class MainPanel extends Component {
@@ -27,31 +26,27 @@ class MainPanel extends Component {
       rm1Data: [],
       rm0Data: [],
       data: [],
-      rooms: {
-        room0: new Room(0),
-        room1: new Room(1),
-        room2: new Room(2),
-        room3: new Room(3),
-        room4: new Room(4),
-        room5: new Room(5),
-        room6: new Room(6),
-      },
-      temp0: 20,
-      temp1: 20,
-      temp2: 20,
-      temp3: 20,
-      temp4: 20,
-      temp5: 20,
-      temp6:20,
-      tempMax: 28.06,
-      tempMin: 7.983,
-      color0: 'rgba(88,117,153,1)',
-      color1: 'rgba(88,117,153,0.9)',
-      color2: 'rgba(88,117,153,0.8)',
-      color3: 'rgba(88,117,153,0.7)',
-      color4: 'rgba(88,117,153,0.6)',
-      color5: 'rgba(88,117,153,0.5)',
-      color6: 'rgba(88,117,153,0.4)',
+      rm0Temp: 20,
+      rm0Color: 'rgba(88,117,153,1)',
+      rm0IsActivated: false,
+      rm1Temp: 20,
+      rm1Color: 'rgba(88,117,153,1)',
+      rm1IsActivated: false,
+      rm2Temp: 20,
+      rm2Color: 'rgba(88,117,153,1)',
+      rm2IsActivated: false,
+      rm3Temp: 20,
+      rm3Color: 'rgba(88,117,153,1)',
+      rm3IsActivated: false,
+      rm4Temp: 20,
+      rm4Color: 'rgba(88,117,153,1)',
+      rm4IsActivated: false,
+      rm5Temp: 20,
+      rm5Color: 'rgba(88,117,153,1)',
+      rm5IsActivated: false,
+      rm6Temp: 20,
+      rm6Color: 'rgba(88,117,153,1)',
+      rm6IsActivated: false,
     };
   }
 
@@ -101,69 +96,6 @@ class MainPanel extends Component {
     });
 
     console.log("done");
-    /*     .forEach((datapoint) => {
-        console.log(datapoint);
-        switch (datapoint.RoomId) {
-          case "6": {
-            rm6Data.push({
-              timestamp: datapoint.timestamp,
-              temperature: datapoint.temperature,
-            });
-            break;
-          }
-          case "5": {
-            rm5Data.push({
-              timestamp: datapoint.timestamp,
-              temperature: datapoint.temperature,
-            });
-            break;
-          }
-          case "4": {
-            rm4Data.push({
-              timestamp: datapoint.timestamp,
-              temperature: datapoint.temperature,
-            });
-            break;
-          }
-          case "3": {
-            rm3Data.push({
-              timestamp: datapoint.timestamp,
-              temperature: datapoint.temperature,
-            });
-            break;
-          }
-          case "2": {
-            rm2Data.push({
-              timestamp: datapoint.timestamp,
-              temperature: datapoint.temperature,
-            });
-            break;
-          }
-          case "1": {
-            rm1Data.push({
-              timestamp: datapoint.timestamp,
-              temperature: datapoint.temperature,
-            });
-            break;
-          }
-          case "0": {
-            rm0Data.push({
-              timestamp: datapoint.timestamp,
-              temperature: datapoint.temperature,
-            });
-            break;
-          }
-        }
-      });
-    this.setState({
-      rm6Data: {rm6Data},
-      rm5Data: {rm5Data},
-      rm4Data: {rm4Data},
-      rm3Data: {rm3Data},
-      rm2Data: {rm2Data},
-      rm1Data: {rm1Data},
-      rm0Data: {rm0Data}
-      });*/
   };
 
   chooseTime = (start, end, size) => {
@@ -217,13 +149,14 @@ class MainPanel extends Component {
         <div class="footer">Image</div>
         <button onClick={this.fetchData}>update data</button>
         <div class="footer">
-          <Button style={{backgroundColor: this.state.color0}}>Room 0</Button>
-          <Button style={{backgroundColor: this.state.color1}}>R1</Button>
-          <Button style={{backgroundColor: this.state.color2}}>R2</Button>
-          <Button style={{backgroundColor: this.state.color3}}>R3</Button>
-          <Button style={{backgroundColor: this.state.color4}}>R4</Button>
-          <Button style={{backgroundColor: this.state.color5}}>R5</Button>
-          <Button style={{backgroundColor: this.state.color6}}>R6</Button>
+          <Button style={{backgroundColor: this.state.room0Color}} onClick={() => this.setState({rm0IsActivated: !this.state.rm0IsActivated})}>Room 0</Button>
+          <Button style={{backgroundColor: this.state.room1Color}} onClick={() => this.setState({rm1IsActivated: !this.state.rm1IsActivated})}>Room 1</Button>
+          <Button style={{backgroundColor: this.state.room2Color}} onClick={() => this.setState({rm2IsActivated: !this.state.rm2IsActivated})}>Room 2</Button>
+          <Button style={{backgroundColor: this.state.room3Color}} onClick={() => this.setState({rm3IsActivated: !this.state.rm3IsActivated})}>Room 3</Button>
+          <Button style={{backgroundColor: this.state.room4Color}} onClick={() => this.setState({rm4IsActivated: !this.state.rm4IsActivated})}>Room 4</Button>
+          <Button style={{backgroundColor: this.state.room5Color}} onClick={() => this.setState({rm5IsActivated: !this.state.rm5IsActivated})}>Room 5</Button>
+          <Button style={{backgroundColor: this.state.room6Color}} onClick={() => this.setState({rm6IsActivated: !this.state.rm6IsActivated})}>Room 6</Button>
+          <p>room0: {this.state.rm0IsActivated.toString()}</p>
         </div>
       </div>
     );

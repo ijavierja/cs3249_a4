@@ -54,8 +54,6 @@ class Controller extends React.Component {
           placeholder="Set datetime (note: invalid datetimes will automatically be adjusted into valid datetimes)"
         /> 
         </DateTimeRangeContainer>
-        <p>Start: {this.props.startDate.toString()}</p>
-        <p>End: {this.props.endDate.toString()}</p>
         <Slider
             step={1}
             min={1}
@@ -63,11 +61,10 @@ class Controller extends React.Component {
             value={this.props.size}
             marks={marks}
             onChange={this.props.onSizeChange}
-            valueLabelDisplay="on"
           />
-        <span>
-          2^{this.props.size} = {Math.pow(2, this.props.size)} samples
-        </span>
+        <p><span className="boldText">Start Datetime: </span> {this.props.startDate.toString()}</p>
+        <p><span className="boldText">End Datetime: </span> {this.props.endDate.toString()}</p>
+        <span className="boldText">Number of samples: </span>2^{this.props.size} = {Math.pow(2, this.props.size)}
       </div>
     );
   }

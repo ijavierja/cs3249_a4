@@ -9,29 +9,20 @@ let rm1Temperature = [19.567, 19.567, 19.567, 19.567, 19.567];
 let rm2Timestamp = ['2013-10-02T05:00:00', '2013-10-02T05:15:00', '2013-10-02T05:30:00', '2013-10-02T05:45:00', '2013-10-02T06:00:00'];
 let rm2Temperature = [19.758, 19.662, 19.758, 19.662, 19.662];
 
-var trace0 = {x: rm0Timestamp, y: rm0Temperature, type: 'line'};
-var trace1 = {x: rm1Timestamp, y: rm1Temperature, type: 'line'};
-var trace2 = {x: rm2Timestamp, y: rm2Temperature, type: 'line'};
-
-var data = [trace0, trace1, trace2];
-
-var layout = {
-  width: 320,
-  height: 240,
-  title: 'A Fancy Plot',
-}
+var Room0 = {x: rm0Timestamp, y: rm0Temperature, type: 'line', name: 'Room 0'};
+var Room1 = {x: rm1Timestamp, y: rm1Temperature, type: 'line', name: 'Room 1'};
+var Room2 = {x: rm2Timestamp, y: rm2Temperature, type: 'line', name: 'Room 2'};
 
 export default class TimeSeriesGraphView extends Component {
   render() {
     return (
       <div>
         <Plot
-          data={[trace0, trace1, trace2]}
+          data={[Room0, Room1, Room2]}
           layout={{
             title: 'Timeseries Graph',
           }}
         />
-        <h3>{this.props.data.length}</h3>
       </div>
     );
   }

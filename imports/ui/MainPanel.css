@@ -1,17 +1,47 @@
-.header {
+/* .body {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  padding: 1%;
+} */
+
+.body {
+  margin: 0;
+  padding: 0;
+  background: #fff;
+}
+
+.container {
+  text-align: center;
+  width: 900px;
+  height: 100%;
+  display: block;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  background-color: #ddd3ee;
+}
+
+.controller {
   background-color: #f1f1f1;
-  padding-top: 50px;
-  padding-bottom: 20px;
+  padding: 1%;
   justify-content: space-around;
   align-items: center;
 }
 
 .main-content {
   background-color: lightcyan;
-  padding: 20px;
+  padding: 1%;
 }
 
 .footer {
   background-color: lightblue;
-  padding: 20px;
+  padding: 1%;
+}
+
+.boldText {
+  font-weight: bold;
+}
+
+p {
+  margin: 0.5;
 }

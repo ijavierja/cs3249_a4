@@ -66,32 +66,34 @@ class MainPanel extends Component {
 
   render() {
     return (
-      <div class="body">
-        <div class="header">
-          <Controller
-            startDate={this.state.startDate}
-            endDate={this.state.endDate}
-            size={this.state.size}
-            onDateChange={this.onDateChange}
-            onSizeChange={this.onSizeChange}
-          />
-        </div>
-        <div class="main-content">
-          <TimeSeriesGraphWrapper
-            startDate={this.state.startDate}
-            endDate={this.state.endDate}
-            size={this.state.size}
-          />
-        </div>
-        <div class="footer">
-          <Button style={{backgroundColor: this.getNewColor(28)}} onClick={() => this.setState({rm0IsActivated: !this.state.rm0IsActivated})}>Room 0</Button>
-          <Button style={{backgroundColor: this.getNewColor(22)}} onClick={() => this.setState({rm1IsActivated: !this.state.rm1IsActivated})}>Room 1</Button>
-          <Button style={{backgroundColor: this.getNewColor(20)}} onClick={() => this.setState({rm2IsActivated: !this.state.rm2IsActivated})}>Room 2</Button>
-          <Button style={{backgroundColor: this.getNewColor(17)}} onClick={() => this.setState({rm3IsActivated: !this.state.rm3IsActivated})}>Room 3</Button>
-          <Button style={{backgroundColor: this.getNewColor(15)}} onClick={() => this.setState({rm4IsActivated: !this.state.rm4IsActivated})}>Room 4</Button>
-          <Button style={{backgroundColor: this.getNewColor(12)}} onClick={() => this.setState({rm5IsActivated: !this.state.rm5IsActivated})}>Room 5</Button>
-          <Button style={{backgroundColor: this.getNewColor(7)}} onClick={() => this.setState({rm6IsActivated: !this.state.rm6IsActivated})}>Room 6</Button>
-          <p>room0: {this.state.rm0IsActivated.toString()}</p>
+      <div className="body">
+        <div className="container">
+          <h3>Room Temperature Monitoring Dashboard</h3>
+          <div className="controller">
+            <Controller
+              startDate={this.state.startDate}
+              endDate={this.state.endDate}
+              size={this.state.size}
+              onDateChange={this.onDateChange}
+              onSizeChange={this.onSizeChange}
+            />
+          </div>
+          <div className="main-content">
+            <TimeSeriesGraphWrapper
+              startDate={this.state.startDate}
+              endDate={this.state.endDate}
+              size={this.state.size}
+            />
+          </div>
+          <div className="footer">
+            <Button style={{backgroundColor: this.getNewColor(28)}} onClick={() => this.setState({rm0IsActivated: !this.state.rm0IsActivated})}>Room 0</Button>
+            <Button style={{backgroundColor: this.getNewColor(22)}} onClick={() => this.setState({rm1IsActivated: !this.state.rm1IsActivated})}>Room 1</Button>
+            <Button style={{backgroundColor: this.getNewColor(20)}} onClick={() => this.setState({rm2IsActivated: !this.state.rm2IsActivated})}>Room 2</Button>
+            <Button style={{backgroundColor: this.getNewColor(17)}} onClick={() => this.setState({rm3IsActivated: !this.state.rm3IsActivated})}>Room 3</Button>
+            <Button style={{backgroundColor: this.getNewColor(15)}} onClick={() => this.setState({rm4IsActivated: !this.state.rm4IsActivated})}>Room 4</Button>
+            <Button style={{backgroundColor: this.getNewColor(12)}} onClick={() => this.setState({rm5IsActivated: !this.state.rm5IsActivated})}>Room 5</Button>
+            <Button style={{backgroundColor: this.getNewColor(7)}} onClick={() => this.setState({rm6IsActivated: !this.state.rm6IsActivated})}>Room 6</Button>
+          </div>
         </div>
       </div>
     );

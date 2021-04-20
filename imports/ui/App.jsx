@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useTracker } from 'meteor/react-meteor-data';
 import { TimeSeriesCollection } from "/imports/db/TimeSeriesCollection";
-import { TimeSeriesGraph } from "./components/TimeSeriesGraph";
 import * as Constants from "./util/Constants.jsx";
 import moment from "moment";
 import Controller from "./components/Controller.jsx";
+import { TimeSeriesGraph } from "./components/TimeSeriesGraph";
+import FloorPlanView from "./components/FloorPlanView.jsx";
   
 export const App = () => {
   const [{ startDate, endDate }, setDate] = useState({
@@ -22,6 +23,15 @@ export const App = () => {
     rm6: true,
   });
   const data = useData(startDate, endDate, Math.pow(2, size));
+
+  //average temperature
+  const rm0temp = getAverageTemp(data.rm0temp);
+  const rm1temp = getAverageTemp(data.rm1temp);
+  const rm2temp = getAverageTemp(data.rm2temp);
+  const rm3temp = getAverageTemp(data.rm3temp);
+  const rm4temp = getAverageTemp(data.rm4temp);
+  const rm5temp = getAverageTemp(data.rm5temp);
+  const rm6temp = getAverageTemp(data.rm6temp);
 
   onDateChange = (newStartDate, newEndDate) => {
     // start date
@@ -47,6 +57,28 @@ export const App = () => {
 
   onSizeChange = (event, newValue) => {
     setSize(newValue);
+  };
+
+  toggleRoom0 = () => {
+    setVisibility({ ...visibility, rm0: !visibility.rm0 });
+  };
+  toggleRoom1 = () => {
+    setVisibility({ ...visibility, rm1: !visibility.rm1 });
+  };
+  toggleRoom2 = () => {
+    setVisibility({ ...visibility, rm2: !visibility.rm2 });
+  };
+  toggleRoom3 = () => {
+    setVisibility({ ...visibility, rm3: !visibility.rm3 });
+  };
+  toggleRoom4 = () => {
+    setVisibility({ ...visibility, rm4: !visibility.rm4 });
+  };
+  toggleRoom5 = () => {
+    setVisibility({ ...visibility, rm5: !visibility.rm5 });
+  };
+  toggleRoom6 = () => {
+    setVisibility({ ...visibility, rm6: !visibility.rm6 });
   };
   
   return (
@@ -76,7 +108,25 @@ export const App = () => {
             visibility={visibility}
           />
         </div>
-        <div className="footer"></div>
+        <div className="footer">
+          <FloorPlanView
+            toggleRoom0={toggleRoom0}
+            toggleRoom1={toggleRoom1}
+            toggleRoom2={toggleRoom2}
+            toggleRoom3={toggleRoom3}
+            toggleRoom4={toggleRoom4}
+            toggleRoom5={toggleRoom5}
+            toggleRoom6={toggleRoom6}
+            rm0temp={rm0temp}
+            rm1temp={rm1temp}
+            rm2temp={rm2temp}
+            rm3temp={rm3temp}
+            rm4temp={rm4temp}
+            rm5temp={rm5temp}
+            rm6temp={rm6temp}
+            visibility={visibility}
+          />
+        </div>
       </div>
     </div>
   );
@@ -223,4 +273,15 @@ function roundDownTo30(date) {
   } else {
     return date.set("minute", 0);
   }
+}
+function getAverageTemp(arr) {
+  if (arr.length === 0) {
+    return Constants.minTemp + Constants.maxTemp;
+  }
+  var sum = 0;
+  for(var i=0; i < arr.length; i++) {
+    sum += parseFloat(arr[i]);
+  }
+
+  return sum/arr.length;
 }

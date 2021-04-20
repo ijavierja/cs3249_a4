@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-//import MainPanel from "./MainPanel.jsx"
 import { useTracker } from 'meteor/react-meteor-data';
 import { TimeSeriesCollection } from "/imports/db/TimeSeriesCollection";
 import { TimeSeriesGraph } from "./components/TimeSeriesGraph";
 import * as Constants from "./util/Constants.jsx";
 import moment from "moment";
+import { Controller } from './components/Controller';
   
 export const App = () => {
   const [{ startDate, endDate }, setDate] = useState({
     startDate: Constants.minDate,
     endDate: Constants.maxDate,
   });
-  const [size, setSize] = useState(128);
+  const [size, setSize] = useState(3);
   const data = useData(startDate, endDate, size);
   
   return (
@@ -73,7 +73,6 @@ const useData = (
     var rm5temp = [];
     var rm6temp = [];
     
-
     TimeSeriesCollection.find({_id: {$in: keys}},{}).forEach((datapoint) => {
       switch (datapoint.RoomId) {
         case "0":
@@ -119,91 +118,6 @@ const useData = (
     };
   });
 
-/*function getTimestamps(start, end, size){
-  var timestamps = [];
-  const duration = moment.duration(end.diff(start)).asMinutes() / (size - 1);
-  var currDate = start.clone();
-
-  timestamps.push(start.format("YYYY-MM-DDTHH:mm:00"));
-
-  for (var i = 0; i < size -2; i++) {
-    currDate = currDate.clone().add(duration, "minutes");
-    currDate = roundTo15(currDate.clone());
-    timestamps.push(currDate.format("YYYY-MM-DDTHH:mm:00"));
-  }
-  timestamps.push(end.format("YYYY-MM-DDTHH:mm:00"));
-  
-  return timestamps;
-}
-
-function roundTo15(date){
-  return date.set("minute", Math.floor(date.minute() / 15) * 15);
-}
-
-function roundTo30(arr) {
-  var timestamps = [];
-
-  const first = moment(arr[0]);
-  const firstMinute = first.minute();
-  if (firstMinute === 0 || firstMinute === 30) {
-    timestamps.push(arr[0]);
-  }
-  else {
-    if (firstMinute < 30) {
-      timestamps.push(
-        first.set("minute", 30).format("YYYY-MM-DDTHH:mm:00")
-      );
-    }
-    else if (firstMinute > 30) {
-      timestamps.push(
-        first
-          .set("minute", 0)
-          .set("hour", first.get("hour") + 1)
-          .format("YYYY-MM-DDTHH:mm:00")
-      );
-    }
-  }
-
-  var currDate;
-  var minute;
-  for (var i = 1; i < arr.length; i++ ) {
-    currDate = moment(arr[i]);
-    minute = currDate.minute();
-    if (minute === 0 || minute === 30) {
-      timestamps.push(arr[i]);
-    } else {
-      if (minute < 30) {
-        timestamps.push(
-          currDate.set("minute", 0).format("YYYY-MM-DDTHH:mm:00")
-        );
-      } else if (minute > 30) {
-        timestamps.push(
-          currDate.set("minute", 30).format("YYYY-MM-DDTHH:mm:00")
-        );
-      }
-    }
-  }
-
-  return timestamps;
-}
-
-function createkeys(timestmaps, rm5Timestamps) {
-  var keys = [];
-  for(var room = 0; room <= 6; room++) {
-    if(room === 5){
-      for(var i = 0; i < rm5Timestamps.length; i++) {
-        keys.push(room.toString().concat(rm5Timestamps[i]));
-      }
-    } else{
-      for (var i = 0; i < timestmaps.length; i++) {
-        keys.push(room.toString().concat(timestmaps[i]));
-      }
-    }
-  }
-  console.log("keys");
-  return keys;
-}
-*/
 function createKeysTS (start, end, size) {
   var timestamps = [];
   var rm5Timestamps = [];

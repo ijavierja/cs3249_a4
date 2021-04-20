@@ -11,30 +11,22 @@ export const App = () => {
     startDate: Constants.minDate,
     endDate: Constants.maxDate,
   });
-  const [size, setSize] = useState(20);
-
-  const timestamps = getTimestamps(startDate, endDate, size);
-  const rm5Timestamps = roundTo30(timestamps);
-
-  const data = useData(
-    timestamps,
-    rm5Timestamps,
-  );
-
+  const [size, setSize] = useState(128);
+  const data = useData(startDate, endDate, size);
   
   return (
     <div>
       <div>start date: {startDate.format("YYYY-MM-DDTHH:mm:00")}</div>
       <div>end date: {endDate.format("YYYY-MM-DDTHH:mm:00")}</div>
       <div>size: {size}</div>
-      <button onClick={() => setSize((size) => size +1)}>
+      <button onClick={() => setSize((size) => size + 1)}>
         Increase array size
       </button>
 
       <div>
         <TimeSeriesGraph
-          timestamps={timestamps}
-          rm5Timestamps={rm5Timestamps}
+          timestamps={data.timestamps}
+          rm5Timestamps={data.rm5Timestamps}
           rm0temp={data.rm0temp}
           rm1temp={data.rm1temp}
           rm2temp={data.rm2temp}
@@ -44,70 +36,19 @@ export const App = () => {
           rm6temp={data.rm6temp}
         />
       </div>
-      <div>
-        rm0temp:
-        {data.rm0temp.map((d) => (
-          <li key={d}>{d}</li>
-        ))}
-      </div>
-      <div>
-        rm1temp:
-        {data.rm1temp.map((d) => (
-          <li key={d}>{d}</li>
-        ))}
-      </div>
-      <div>
-        rm2temp:
-        {data.rm2temp.map((d) => (
-          <li key={d}>{d}</li>
-        ))}
-      </div>
-      <div>
-        rm3temp:
-        {data.rm3temp.map((d) => (
-          <li key={d}>{d}</li>
-        ))}
-      </div>
-      <div>
-        rm4temp:
-        {data.rm4temp.map((d) => (
-          <li key={d}>{d}</li>
-        ))}
-      </div>
-      <div>
-        rm5temp:
-        {data.rm5temp.map((d) => (
-          <li key={d}>{d}</li>
-        ))}
-      </div>
-      <div>
-        rm6temp:
-        {data.rm6temp.map((d) => (
-          <li key={d}>{d}</li>
-        ))}
-      </div>
-      <div>
-        timestamps:
-        {timestamps.map((d) => (
-          <li key={d}>{d}</li>
-        ))}
-      </div>
-      <div>
-        edited timestamps:
-        {rm5Timestamps.map((d) => (
-          <li>{d}</li>
-        ))}
-      </div>
     </div>
   );
 };
 
 const useData = (
-  timestamps,
-  rm5Timestamps,
+  start,
+  end,
+  size,
 ) =>
   useTracker(() => {
     const noDataAvailable = {
+      timestamps: [],
+      rm5Timestamps: [],
       rm0temp: [],
       rm1temp: [],
       rm2temp: [],
@@ -116,14 +57,14 @@ const useData = (
       rm5temp: [],
       rm6temp: [],
     };
-    Meteor.subscribe("timeseries");
+    const handler = Meteor.subscribe("timeseries");
 
-    //const handler = Meteor.subscribe("timeseries");
-
-    /*if (!handler.ready()) {
+    if (!handler.ready()) {
       console.log("loading");
       return { ...noDataAvailable, isLoading: true };
-    }*/
+    }
+    const { timestamps, rm5Timestamps, keys } = createKeysTS(start, end, size);
+    
     var rm0temp = [];
     var rm1temp = [];
     var rm2temp = [];
@@ -131,54 +72,43 @@ const useData = (
     var rm4temp = [];
     var rm5temp = [];
     var rm6temp = [];
+    
 
-    TimeSeriesCollection.find({},{sort: {timestamp: 1}}).forEach((datapoint) => {
+    TimeSeriesCollection.find({_id: {$in: keys}},{}).forEach((datapoint) => {
       switch (datapoint.RoomId) {
         case "0":
-          if (timestamps.includes(datapoint.timestamp)) {
-            rm0temp.push(datapoint.temperature);
-          }
+          rm0temp.push(datapoint.temperature);
           break;
 
         case "1":
-          if (timestamps.includes(datapoint.timestamp)) {
-            rm1temp.push(datapoint.temperature);
-          }
+          rm1temp.push(datapoint.temperature);
           break;
 
         case "2":
-          if (timestamps.includes(datapoint.timestamp)) {
-            rm2temp.push(datapoint.temperature);
-          }
+          rm2temp.push(datapoint.temperature);
           break;
 
         case "3":
-          if (timestamps.includes(datapoint.timestamp)) {
-            rm3temp.push(datapoint.temperature);
-          }
+          rm3temp.push(datapoint.temperature);
           break;
 
         case "4":
-          if (timestamps.includes(datapoint.timestamp)) {
-            rm4temp.push(datapoint.temperature);
-          }
+          rm4temp.push(datapoint.temperature);
           break;
 
         case "5":
-          if (rm5Timestamps.includes(datapoint.timestamp)) {
-            rm5temp.push(datapoint.temperature);
-          }
+          rm5temp.push(datapoint.temperature);
           break;
 
         case "6":
-          if (timestamps.includes(datapoint.timestamp)) {
-            rm6temp.push(datapoint.temperature);
-          }
+          rm6temp.push(datapoint.temperature);
           break;
       }
     });
 
     return {
+      timestamps: timestamps,
+      rm5Timestamps: rm5Timestamps,
       rm0temp: rm0temp,
       rm1temp: rm1temp,
       rm2temp: rm2temp,
@@ -189,7 +119,7 @@ const useData = (
     };
   });
 
-function getTimestamps(start, end, size){
+/*function getTimestamps(start, end, size){
   var timestamps = [];
   const duration = moment.duration(end.diff(start)).asMinutes() / (size - 1);
   var currDate = start.clone();
@@ -202,6 +132,7 @@ function getTimestamps(start, end, size){
     timestamps.push(currDate.format("YYYY-MM-DDTHH:mm:00"));
   }
   timestamps.push(end.format("YYYY-MM-DDTHH:mm:00"));
+  
   return timestamps;
 }
 
@@ -254,4 +185,83 @@ function roundTo30(arr) {
   }
 
   return timestamps;
+}
+
+function createkeys(timestmaps, rm5Timestamps) {
+  var keys = [];
+  for(var room = 0; room <= 6; room++) {
+    if(room === 5){
+      for(var i = 0; i < rm5Timestamps.length; i++) {
+        keys.push(room.toString().concat(rm5Timestamps[i]));
+      }
+    } else{
+      for (var i = 0; i < timestmaps.length; i++) {
+        keys.push(room.toString().concat(timestmaps[i]));
+      }
+    }
+  }
+  console.log("keys");
+  return keys;
+}
+*/
+function createKeysTS (start, end, size) {
+  var timestamps = [];
+  var rm5Timestamps = [];
+  var keys = [];
+
+  const duration = moment.duration(end.diff(start)).asMinutes() / (size - 1);
+  
+  var currDate = start.clone();
+  let currTs;
+  let currTs5;
+   for (var i = 0; i < size; i++) {
+     currTs = roundTo15(currDate.clone()).format("YYYY-MM-DDTHH:mm:00");
+     if (i === 0) {
+       currTs5 = roundUpTo30(currDate.clone()).format("YYYY-MM-DDTHH:mm:00");
+     } else {
+       currTs5 = roundDownTo30(currDate.clone()).format("YYYY-MM-DDTHH:mm:00");
+     }
+     for (var room = 0; room <= 6; room++) {
+       if (room === 5) {
+         keys.push(room.toString().concat(currTs5));
+       } else {
+         keys.push(room.toString().concat(currTs));
+       }
+     }
+     timestamps.push(currTs);
+     rm5Timestamps.push(currTs5);
+     currDate = currDate.clone().add(duration, "minutes");
+   }
+  
+  return {
+    timestamps: timestamps,
+    rm5Timestamps: rm5Timestamps,
+    keys: keys,
+  };
+}
+
+function roundTo15(date) {
+  return date.set("minute", Math.floor(date.minute() / 15) * 15);
+}
+
+function roundUpTo30(date) {
+  var minute = date.minute;
+
+  if (minute > 30) {
+    return date.set("minute", 0).set("hour", first.get("hour") + 1);
+    
+  } else  {
+    return date.set("minute", 30);
+  }
+}
+
+function roundDownTo30(date) {
+  var minute = date.minute;
+
+  if (minute < 30) {
+    return date.set("minute", 30);
+   
+  } else {
+    return date.set("minute", 0);
+  }
 }

@@ -12,7 +12,7 @@ let rm2Temperature = [19.758, 19.662, 19.758, 19.662, 19.662];
 export default class TimeSeriesGraphView extends Component {
   Room0 = {x: rm0Timestamp, y: rm0Temperature, type: 'line', name: 'Room 0', visible: this.props.rm0IsActivated ? 'true' : 'legendonly'};
   Room1 = {x: rm1Timestamp, y: rm1Temperature, type: 'line', name: 'Room 1', visible: this.props.rm1IsActivated ? 'true' : 'legendonly'};
-  Room2 = {x: rm2Timestamp, y: rm2Temperature, type: 'line', name: 'Room 2', visibile: this.props.rm2IsActivated ? 'true' : 'legendonly'};
+  Room2 = {x: rm2Timestamp, y: rm2Temperature, type: 'line', name: 'Room 2', visible: this.props.rm2IsActivated ? 'true' : 'legendonly'};
 
   render() {
     return (

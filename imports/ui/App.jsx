@@ -4,37 +4,79 @@ import { TimeSeriesCollection } from "/imports/db/TimeSeriesCollection";
 import { TimeSeriesGraph } from "./components/TimeSeriesGraph";
 import * as Constants from "./util/Constants.jsx";
 import moment from "moment";
-import { Controller } from './components/Controller';
+import Controller from "./components/Controller.jsx";
   
 export const App = () => {
   const [{ startDate, endDate }, setDate] = useState({
     startDate: Constants.minDate,
     endDate: Constants.maxDate,
   });
-  const [size, setSize] = useState(3);
-  const data = useData(startDate, endDate, size);
+  const [size, setSize] = useState(2);
+  const [visibility, setVisibility] = useState({
+    rm0: true,
+    rm1: true,
+    rm2: true,
+    rm3: true,
+    rm4: true,
+    rm5: true,
+    rm6: true,
+  });
+  const data = useData(startDate, endDate, Math.pow(2, size));
+
+  onDateChange = (newStartDate, newEndDate) => {
+    // start date
+    if (newStartDate < Constants.minDate) {
+      newStartDate = Constants.minDate;
+    } else {
+      newStartDate.set(
+        "minute",
+        Math.floor(newStartDate.minute() / 15) * 15
+      );
+    }
+    // end date
+    if (newEndDate > Constants.maxDate) {
+       newEndDate = Constants.maxDate;
+    } else {
+      newEndDate.set("minute", Math.floor(newStartDate.minute() / 15) * 15);
+    }
+    setDate({
+      startDate: newStartDate,
+      endDate: newEndDate,
+    });
+  };
+
+  onSizeChange = (event, newValue) => {
+    setSize(newValue);
+  };
   
   return (
-    <div>
-      <div>start date: {startDate.format("YYYY-MM-DDTHH:mm:00")}</div>
-      <div>end date: {endDate.format("YYYY-MM-DDTHH:mm:00")}</div>
-      <div>size: {size}</div>
-      <button onClick={() => setSize((size) => size + 1)}>
-        Increase array size
-      </button>
-
-      <div>
-        <TimeSeriesGraph
-          timestamps={data.timestamps}
-          rm5Timestamps={data.rm5Timestamps}
-          rm0temp={data.rm0temp}
-          rm1temp={data.rm1temp}
-          rm2temp={data.rm2temp}
-          rm3temp={data.rm3temp}
-          rm4temp={data.rm4temp}
-          rm5temp={data.rm5temp}
-          rm6temp={data.rm6temp}
-        />
+    <div className="body">
+      <div className="container">
+        <h3>Room Temperature Monitoring Dashboard</h3>
+        <div className="controller">
+          <Controller
+            startDate={startDate}
+            endDate={endDate}
+            size={size}
+            onDateChange={onDateChange}
+            onSizeChange={onSizeChange}
+          />
+        </div>
+        <div className="main-content">
+          <TimeSeriesGraph
+            timestamps={data.timestamps}
+            rm5Timestamps={data.rm5Timestamps}
+            rm0temp={data.rm0temp}
+            rm1temp={data.rm1temp}
+            rm2temp={data.rm2temp}
+            rm3temp={data.rm3temp}
+            rm4temp={data.rm4temp}
+            rm5temp={data.rm5temp}
+            rm6temp={data.rm6temp}
+            visibility={visibility}
+          />
+        </div>
+        <div className="footer"></div>
       </div>
     </div>
   );
@@ -62,6 +104,9 @@ const useData = (
     if (!handler.ready()) {
       console.log("loading");
       return { ...noDataAvailable, isLoading: true };
+    }
+    if(handler.ready()) {
+      console.log("done!");
     }
     const { timestamps, rm5Timestamps, keys } = createKeysTS(start, end, size);
     

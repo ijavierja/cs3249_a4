@@ -12,12 +12,15 @@ export const TimeSeriesGraph = ({
   rm4temp,
   rm5temp,
   rm6temp,
+  visibility,
 }) => {
+
   var Room0 = {
     x: timestamps,
     y: rm0temp,
     type: "line",
     name: "Room 0",
+    visible: visibility.rm0 ? "true" : "legendonly",
   };
 
   var Room1 = {
@@ -25,6 +28,7 @@ export const TimeSeriesGraph = ({
     y: rm1temp,
     type: "line",
     name: "Room 1",
+    visible: visibility.rm1 ? "true" : "legendonly",
   };
 
   var Room2 = {
@@ -32,6 +36,7 @@ export const TimeSeriesGraph = ({
     y: rm2temp,
     type: "line",
     name: "Room 2",
+    visible: visibility.rm2 ? "true" : "legendonly",
   };
 
   var Room3 = {
@@ -39,6 +44,7 @@ export const TimeSeriesGraph = ({
     y: rm3temp,
     type: "line",
     name: "Room 3",
+    visible: visibility.rm3 ? "true" : "legendonly",
   };
 
   var Room4 = {
@@ -46,6 +52,7 @@ export const TimeSeriesGraph = ({
     y: rm4temp,
     type: "line",
     name: "Room 4",
+    visible: visibility.rm4 ? "true" : "legendonly",
   };
 
   var Room5 = {
@@ -53,6 +60,7 @@ export const TimeSeriesGraph = ({
     y: rm5temp,
     type: "line",
     name: "Room 5",
+    visible: visibility.rm5 ? "true" : "legendonly",
   };
 
   var Room6 = {
@@ -60,6 +68,7 @@ export const TimeSeriesGraph = ({
     y: rm6temp,
     type: "line",
     name: "Room 6",
+    visible: visibility.rm6 ? "true" : "legendonly",
   };
 
   return (

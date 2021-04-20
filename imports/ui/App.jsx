@@ -11,30 +11,30 @@ export const App = () => {
     startDate: Constants.minDate,
     endDate: Constants.maxDate,
   });
-  const [size, setSize] = useState(2);
+  const [size, setSize] = useState(20);
 
   const timestamps = getTimestamps(startDate, endDate, size);
   const rm5Timestamps = roundTo30(timestamps);
 
-  const data = useData(timestamps, rm5Timestamps);
+  const data = useData(
+    timestamps,
+    rm5Timestamps,
+  );
 
-  const handleClick = () =>{
-    console.log(data.rm0temp);
-  }
+  
   return (
     <div>
       <div>start date: {startDate.format("YYYY-MM-DDTHH:mm:00")}</div>
       <div>end date: {endDate.format("YYYY-MM-DDTHH:mm:00")}</div>
       <div>size: {size}</div>
-      <button onClick={() => setSize((size) => size + 1)}>
+      <button onClick={() => setSize((size) => size +1)}>
         Increase array size
       </button>
-      <button onClick={handleClick}>check data</button>
 
       <div>
         <TimeSeriesGraph
-          timestamps={data.timestamps}
-          rm5Timestamps={data.rm5Timestamps}
+          timestamps={timestamps}
+          rm5Timestamps={rm5Timestamps}
           rm0temp={data.rm0temp}
           rm1temp={data.rm1temp}
           rm2temp={data.rm2temp}
@@ -102,7 +102,10 @@ export const App = () => {
   );
 };
 
-const useData = (timestamps, rm5Timestamps) =>
+const useData = (
+  timestamps,
+  rm5Timestamps,
+) =>
   useTracker(() => {
     const noDataAvailable = {
       rm0temp: [],
@@ -113,69 +116,67 @@ const useData = (timestamps, rm5Timestamps) =>
       rm5temp: [],
       rm6temp: [],
     };
+    Meteor.subscribe("timeseries");
 
-    const handler = Meteor.subscribe("timeseries");
+    //const handler = Meteor.subscribe("timeseries");
 
-    if (!handler.ready()) {
+    /*if (!handler.ready()) {
       console.log("loading");
       return { ...noDataAvailable, isLoading: true };
-    }
+    }*/
+    var rm0temp = [];
+    var rm1temp = [];
+    var rm2temp = [];
+    var rm3temp = [];
+    var rm4temp = [];
+    var rm5temp = [];
+    var rm6temp = [];
 
-    const rm0temp = [];
-    const rm1temp = [];
-    const rm2temp = [];
-    const rm3temp = [];
-    const rm4temp = [];
-    const rm5temp = [];
-    const rm6temp = [];
+    TimeSeriesCollection.find({},{sort: {timestamp: 1}}).forEach((datapoint) => {
+      switch (datapoint.RoomId) {
+        case "0":
+          if (timestamps.includes(datapoint.timestamp)) {
+            rm0temp.push(datapoint.temperature);
+          }
+          break;
 
-    TimeSeriesCollection.find({ RoomId: 6 }).forEach(
-      (datapoint) => {
-        switch (datapoint.RoomId) {
-          case "0":
-            if (timestamps.includes(datapoint.timestamp)) {
-              rm0temp.push(datapoint.temperature);
-            }
-            break;
+        case "1":
+          if (timestamps.includes(datapoint.timestamp)) {
+            rm1temp.push(datapoint.temperature);
+          }
+          break;
 
-          case "1":
-            if (timestamps.includes(datapoint.timestamp)) {
-              rm1temp.push(datapoint.temperature);
-            }
-            break;
+        case "2":
+          if (timestamps.includes(datapoint.timestamp)) {
+            rm2temp.push(datapoint.temperature);
+          }
+          break;
 
-          case "2":
-            if (timestamps.includes(datapoint.timestamp)) {
-              rm2temp.push(datapoint.temperature);
-            }
-            break;
+        case "3":
+          if (timestamps.includes(datapoint.timestamp)) {
+            rm3temp.push(datapoint.temperature);
+          }
+          break;
 
-          case "3":
-            if (timestamps.includes(datapoint.timestamp)) {
-              rm3temp.push(datapoint.temperature);
-            }
-            break;
+        case "4":
+          if (timestamps.includes(datapoint.timestamp)) {
+            rm4temp.push(datapoint.temperature);
+          }
+          break;
 
-          case "4":
-            if (timestamps.includes(datapoint.timestamp)) {
-              rm4temp.push(datapoint.temperature);
-            }
-            break;
+        case "5":
+          if (rm5Timestamps.includes(datapoint.timestamp)) {
+            rm5temp.push(datapoint.temperature);
+          }
+          break;
 
-          case "5":
-            if (rm5Timestamps.includes(datapoint.timestamp)) {
-              rm5temp.push(datapoint.temperature);
-            }
-            break;
-
-          case "6":
-            if (timestamps.includes(datapoint.timestamp)) {
-              rm6temp.push(datapoint.temperature);
-            }
-            break;
-        }
+        case "6":
+          if (timestamps.includes(datapoint.timestamp)) {
+            rm6temp.push(datapoint.temperature);
+          }
+          break;
       }
-    );
+    });
 
     return {
       rm0temp: rm0temp,
@@ -187,61 +188,6 @@ const useData = (timestamps, rm5Timestamps) =>
       rm6temp: rm6temp,
     };
   });
-    /*
-    var rm0temp = [];
-    var rm1temp = [];
-    var rm2temp = [];
-    var rm3temp = [];
-    var rm4temp = [];
-    var rm5temp = [];
-    var rm6temp = [];
-    var temperatures = [];
-
-    var timestamps = getTimestamps(start, end, size);
-    var rm5TS = roundTo30(timestamps);
-
-    const roomList = ["0", "1", "2", "3", "4", "6"];
-    var id;
-    var temp = TimeSeriesCollection.find({}, { limit: 20 }).fetch().map(x => x.temperature);
-    for (var timeIndex = 0; timeIndex < timestamps.length; timeIndex++) {
-      for (var room = 0; room < roomList.length; room++) {
-        id = roomList[room] + timestamps[timeIndex];
-        temp = TimeSeriesCollection.find({},{limit: 20}).fetch();
-
-        switch (roomList[room]){
-          case "0":
-          rm0temp.push(temp);
-          break;
-
-          case "1":
-          rm1temp.push(temp);
-          break;
-
-          case "2":
-          rm2temp.push(temp);
-          break;
-
-          case "3":
-          rm3temp.push(temp);
-          break;
-
-          case "4":
-          rm4temp.push(temp);
-          break;
-
-          case "6":
-          rm6temp.push(temp);
-          break;
-        }
-      }
-    }
-
-    for (var timeIndex = 0; timeIndex < rm5TS.length; timeIndex++) {
-      id = "5" + rm5TS[timeIndex];
-      temp = TimeSeriesCollection.findOne({ _id: id }).temperature;
-      rm6temp.push(temp);
-    }
-  */
 
 function getTimestamps(start, end, size){
   var timestamps = [];

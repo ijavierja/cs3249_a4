@@ -4,7 +4,7 @@ import moment from "moment";
 
 export const TimeSeriesGraph = ({
   timestamps,
-  rm5timestamps,
+  rm5Timestamps,
   rm0temp,
   rm1temp,
   rm2temp,
@@ -13,7 +13,6 @@ export const TimeSeriesGraph = ({
   rm5temp,
   rm6temp,
 }) => {
-
   var Room0 = {
     x: timestamps,
     y: rm0temp,
@@ -50,7 +49,7 @@ export const TimeSeriesGraph = ({
   };
 
   var Room5 = {
-    x: rm5timestamps,
+    x: rm5Timestamps,
     y: rm5temp,
     type: "line",
     name: "Room 5",
@@ -66,7 +65,7 @@ export const TimeSeriesGraph = ({
   return (
     <div>
       <Plot
-        data={[Room0]}
+        data={[Room0, Room1, Room2, Room3, Room4, Room5, Room6]}
         layout={{
           title: "Timeseries Graph",
         }}

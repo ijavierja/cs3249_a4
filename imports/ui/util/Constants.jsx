@@ -5,3 +5,5 @@ export const maxDate = moment('2013-12-03 15:30:00');
 
 export const minTemp = 7.983;
 export const maxTemp = 28.06;
+
+export const themeColor = '#3f51b5';

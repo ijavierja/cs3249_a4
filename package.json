@@ -1,5 +1,5 @@
 {
-  "name": "Room Temperature Monitoring Dashboard",
+  "name": "dashboard",
   "private": true,
   "scripts": {
     "start": "meteor run",

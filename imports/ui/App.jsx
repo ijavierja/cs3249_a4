@@ -6,6 +6,7 @@ import moment from "moment";
 import Controller from "./components/Controller.jsx";
 import { TimeSeriesGraph } from "./components/TimeSeriesGraph";
 import FloorPlanView from "./components/FloorPlanView.jsx";
+import BarLoader from 'react-bar-loader';
   
 export const App = () => {
   const [{ startDate, endDate }, setDate] = useState({
@@ -34,58 +35,105 @@ export const App = () => {
   const rm6temp = getAverageTemp(data.rm6temp);
 
   onDateChange = (newStartDate, newEndDate) => {
-    // start date
-    if (newStartDate < Constants.minDate) {
-      newStartDate = Constants.minDate;
-    } else {
-      newStartDate.set(
-        "minute",
-        Math.floor(newStartDate.minute() / 15) * 15
-      );
+    if (!data.isLoading) {
+      // start date
+      if (newStartDate < Constants.minDate) {
+        newStartDate = Constants.minDate;
+      } else {
+        newStartDate.set(
+          "minute",
+          Math.floor(newStartDate.minute() / 15) * 15
+        );
+      }
+      // end date
+      if (newEndDate > Constants.maxDate) {
+        newEndDate = Constants.maxDate;
+      } else {
+        newEndDate.set("minute", Math.floor(newStartDate.minute() / 15) * 15);
+      }
+      setDate({
+        startDate: newStartDate,
+        endDate: newEndDate,
+      });
     }
-    // end date
-    if (newEndDate > Constants.maxDate) {
-       newEndDate = Constants.maxDate;
-    } else {
-      newEndDate.set("minute", Math.floor(newStartDate.minute() / 15) * 15);
-    }
-    setDate({
-      startDate: newStartDate,
-      endDate: newEndDate,
-    });
   };
 
   onSizeChange = (event, newValue) => {
-    setSize(newValue);
+    if (!data.isLoading) {
+      setSize(newValue);
+    }
   };
 
   toggleRoom0 = () => {
-    setVisibility({ ...visibility, rm0: !visibility.rm0 });
+    if (!data.isLoading) {
+      setVisibility({ ...visibility, rm0: !visibility.rm0 });
+    }
   };
   toggleRoom1 = () => {
-    setVisibility({ ...visibility, rm1: !visibility.rm1 });
+    if (!data.isLoading) {
+      setVisibility({ ...visibility, rm1: !visibility.rm1 });
+    }
   };
   toggleRoom2 = () => {
-    setVisibility({ ...visibility, rm2: !visibility.rm2 });
+    if (!data.isLoading) {
+      setVisibility({ ...visibility, rm2: !visibility.rm2 });
+    }
   };
   toggleRoom3 = () => {
-    setVisibility({ ...visibility, rm3: !visibility.rm3 });
+    if (!data.isLoading) {
+      setVisibility({ ...visibility, rm3: !visibility.rm3 });
+    }
   };
   toggleRoom4 = () => {
-    setVisibility({ ...visibility, rm4: !visibility.rm4 });
+    if (!data.isLoading) {
+      setVisibility({ ...visibility, rm4: !visibility.rm4 });
+    }
   };
   toggleRoom5 = () => {
-    setVisibility({ ...visibility, rm5: !visibility.rm5 });
+    if (!data.isLoading) {
+      setVisibility({ ...visibility, rm5: !visibility.rm5 });
+    }
   };
   toggleRoom6 = () => {
-    setVisibility({ ...visibility, rm6: !visibility.rm6 });
+    if (!data.isLoading) {
+      setVisibility({ ...visibility, rm6: !visibility.rm6 });
+    }
   };
   
   return (
-    <div className="body">
-      <div className="container">
-        <h3>Room Temperature Monitoring Dashboard</h3>
-        <div className="controller">
+    <div style={{
+      margin: "0",
+      padding: "0",
+      width: "100%"
+    }}>
+      <div style={{
+        textAlign: "center",
+        width: "1000px",
+        height: "100%",
+        display: "block",
+        paddingTop: "1%",
+        paddingBottom: "1%",
+        marginLeft: "auto",
+        marginRight: "auto",
+      }}>
+        <p style={{
+          fontSize: "28px",
+          fontWeight: "600"
+        }}>
+          Room Temperature Monitoring Dashboard
+        </p>
+        <div style={{
+          boxShadow: "rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px",
+          paddingTop: "0.1%",
+          paddingBottom: "3%"
+        }}>
+          <p style={{
+            fontSize: "25px",
+            fontWeight: "500",
+            textAlign: "left",
+            marginLeft: "2%"
+          }}>Settings
+          </p>
           <Controller
             startDate={startDate}
             endDate={endDate}
@@ -94,7 +142,24 @@ export const App = () => {
             onSizeChange={onSizeChange}
           />
         </div>
-        <div className="main-content">
+        <div style={{
+          boxShadow: "rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px",
+          marginTop: "2%",
+          marginBottom: "2%",
+          paddingTop: "0.1%",
+          paddingBottom: "0.1%"
+        }}>
+          <p style={{
+            fontSize: "25px",
+            fontWeight: "500",
+            textAlign: "left",
+            marginLeft: "2%"
+          }}>
+            Graph
+          </p>
+          <div style={{display: "block", width: "90%", marginLeft: "auto", marginRight: "auto",}}>
+            <BarLoader color={data.isLoading ? Constants.themeColor : "#fff"} height="2"/>
+          </div>
           <TimeSeriesGraph
             timestamps={data.timestamps}
             rm5Timestamps={data.rm5Timestamps}
@@ -108,7 +173,21 @@ export const App = () => {
             visibility={visibility}
           />
         </div>
-        <div className="footer">
+        <div style={{
+          boxShadow: "rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px",
+          paddingTop: "0.1%",
+          paddingBottom: "3%"
+        }}>
+          <p style={{
+            fontSize: "25px",
+            fontWeight: "500",
+            textAlign: "left",
+            marginLeft: "2%"
+          }}>Floorplan
+          <div style={{display: "block", width: "90%", marginLeft: "auto", marginRight: "auto", paddingTop: "1%"}}>
+            <BarLoader color={data.isLoading ? Constants.themeColor : "#fff"} height="2"/>
+          </div>
+          </p>
           <FloorPlanView
             toggleRoom0={toggleRoom0}
             toggleRoom1={toggleRoom1}
@@ -210,6 +289,7 @@ const useData = (
       rm4temp: rm4temp,
       rm5temp: rm5temp,
       rm6temp: rm6temp,
+      isLoading: false
     };
   });
 

@@ -25,11 +25,13 @@
     "popper.js": "^1.16.1",
     "react": "^16.14.0",
     "react-advanced-datetimerange-picker": "^1.0.13",
+    "react-bar-loader": "^1.0.0",
     "react-bootstrap": "^1.5.2",
     "react-date-picker": "^8.1.1",
     "react-dom": "^16.14.0",
     "react-minimal-datetime-range": "^1.6.0",
     "react-plotly.js": "^2.5.1",
+    "react-spinners": "^0.10.6",
     "react-time-picker": "^4.2.1"
   },
   "meteor": {

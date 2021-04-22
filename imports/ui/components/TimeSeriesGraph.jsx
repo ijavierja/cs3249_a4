@@ -76,7 +76,9 @@ export const TimeSeriesGraph = ({
       <Plot
         data={[Room0, Room1, Room2, Room3, Room4, Room5, Room6]}
         layout={{
-          title: "Timeseries Graph",
+          autosize: true,
+          height: 600,
+          width: 950
         }}
       />
     </div>

@@ -170,6 +170,13 @@ export const App = () => {
             rm4temp={data.rm4temp}
             rm5temp={data.rm5temp}
             rm6temp={data.rm6temp}
+            rm0tempAvg={rm0temp}
+            rm1tempAvg={rm1temp}
+            rm2tempAvg={rm2temp}
+            rm3tempAvg={rm3temp}
+            rm4tempAvg={rm4temp}
+            rm5tempAvg={rm5temp}
+            rm6tempAvg={rm6temp}
             visibility={visibility}
           />
         </div>
@@ -303,24 +310,24 @@ function createKeysTS (start, end, size) {
   var currDate = start.clone();
   let currTs;
   let currTs5;
-   for (var i = 0; i < size; i++) {
-     currTs = roundTo15(currDate.clone()).format("YYYY-MM-DDTHH:mm:00");
-     if (i === 0) {
-       currTs5 = roundUpTo30(currDate.clone()).format("YYYY-MM-DDTHH:mm:00");
-     } else {
-       currTs5 = roundDownTo30(currDate.clone()).format("YYYY-MM-DDTHH:mm:00");
-     }
-     for (var room = 0; room <= 6; room++) {
-       if (room === 5) {
-         keys.push(room.toString().concat(currTs5));
-       } else {
-         keys.push(room.toString().concat(currTs));
-       }
-     }
-     timestamps.push(currTs);
-     rm5Timestamps.push(currTs5);
-     currDate = currDate.clone().add(duration, "minutes");
-   }
+  for (var i = 0; i < size; i++) {
+    currTs = roundTo15(currDate.clone()).format("YYYY-MM-DDTHH:mm:00");
+    if (i === 0) {
+      currTs5 = roundUpTo30(currDate.clone()).format("YYYY-MM-DDTHH:mm:00");
+    } else {
+      currTs5 = roundDownTo30(currDate.clone()).format("YYYY-MM-DDTHH:mm:00");
+    }
+    for (var room = 0; room <= 6; room++) {
+      if (room === 5) {
+        keys.push(room.toString().concat(currTs5));
+      } else {
+        keys.push(room.toString().concat(currTs));
+      }
+    }
+    timestamps.push(currTs);
+    rm5Timestamps.push(currTs5);
+    currDate = currDate.clone().add(duration, "minutes");
+  }
   
   return {
     timestamps: timestamps,
@@ -349,7 +356,7 @@ function roundDownTo30(date) {
 
   if (minute < 30) {
     return date.set("minute", 30);
-   
+  
   } else {
     return date.set("minute", 0);
   }

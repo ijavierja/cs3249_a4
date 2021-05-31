@@ -11,6 +11,13 @@ export const TimeSeriesGraph = ({
   rm4temp,
   rm5temp,
   rm6temp,
+  rm0tempAvg,
+  rm1tempAvg,
+  rm2tempAvg,
+  rm3tempAvg,
+  rm4tempAvg,
+  rm5tempAvg,
+  rm6tempAvg,
   visibility,
 }) => {
 
@@ -18,7 +25,7 @@ export const TimeSeriesGraph = ({
     x: timestamps,
     y: rm0temp,
     type: "line",
-    name: "Room 0",
+    name: "Room 0:" + rm0tempAvg.toFixed(3) + "°C",
     visible: visibility.rm0 ? "true" : "legendonly",
   };
 
@@ -26,7 +33,7 @@ export const TimeSeriesGraph = ({
     x: timestamps,
     y: rm1temp,
     type: "line",
-    name: "Room 1",
+    name: "Room 1:" + rm1tempAvg.toFixed(3) + "°C",
     visible: visibility.rm1 ? "true" : "legendonly",
   };
 
@@ -34,7 +41,7 @@ export const TimeSeriesGraph = ({
     x: timestamps,
     y: rm2temp,
     type: "line",
-    name: "Room 2",
+    name: "Room 2:" + rm2tempAvg.toFixed(3) + "°C",
     visible: visibility.rm2 ? "true" : "legendonly",
   };
 
@@ -42,7 +49,7 @@ export const TimeSeriesGraph = ({
     x: timestamps,
     y: rm3temp,
     type: "line",
-    name: "Room 3",
+    name: "Room 3:" + rm3tempAvg.toFixed(3) + "°C",
     visible: visibility.rm3 ? "true" : "legendonly",
   };
 
@@ -50,7 +57,7 @@ export const TimeSeriesGraph = ({
     x: timestamps,
     y: rm4temp,
     type: "line",
-    name: "Room 4",
+    name: "Room 4:" + rm4tempAvg.toFixed(3) + "°C",
     visible: visibility.rm4 ? "true" : "legendonly",
   };
 
@@ -58,7 +65,7 @@ export const TimeSeriesGraph = ({
     x: rm5Timestamps,
     y: rm5temp,
     type: "line",
-    name: "Room 5",
+    name: "Room 5:" + rm5tempAvg.toFixed(3) + "°C",
     visible: visibility.rm5 ? "true" : "legendonly",
   };
 
@@ -66,7 +73,7 @@ export const TimeSeriesGraph = ({
     x: timestamps,
     y: rm6temp,
     type: "line",
-    name: "Room 6",
+    name: "Room 6:" + rm6tempAvg.toFixed(3) + "°C",
     visible: visibility.rm6 ? "true" : "legendonly",
   };
 

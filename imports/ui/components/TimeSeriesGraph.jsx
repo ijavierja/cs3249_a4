@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Plot from "react-plotly.js";
-import moment from "moment";
 
 export const TimeSeriesGraph = ({
   timestamps,
